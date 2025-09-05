@@ -13,13 +13,13 @@ import (
 	"github.com/gocolly/colly/v2/debug"
 )
 
-// ImprovedSearcher uses Colly for better web scraping
-type ImprovedSearcher struct {
+// Searcher uses Colly for web scraping
+type Searcher struct {
 	collector *colly.Collector
 }
 
-// NewImprovedSearcher creates a new improved searcher using Colly
-func NewImprovedSearcher() *ImprovedSearcher {
+// NewSearcher creates a new searcher using Colly
+func NewSearcher() *Searcher {
 	c := colly.NewCollector(
 		colly.Debugger(&debug.LogDebugger{}),
 	)
@@ -39,13 +39,13 @@ func NewImprovedSearcher() *ImprovedSearcher {
 		log.Printf("Error: %v", err)
 	})
 
-	return &ImprovedSearcher{
+	return &Searcher{
 		collector: c,
 	}
 }
 
 // SearchWithColly performs a search using Colly
-func (s *ImprovedSearcher) SearchWithColly(searchTerm string) ([]Article, error) {
+func (s *Searcher) SearchWithColly(searchTerm string) ([]Article, error) {
 	var articles []Article
 	var scrapeError error
 
@@ -114,7 +114,7 @@ func (s *ImprovedSearcher) SearchWithColly(searchTerm string) ([]Article, error)
 }
 
 // SearchAsync performs asynchronous search with Colly
-func (s *ImprovedSearcher) SearchAsync(searchTerm string, resultChan chan<- SearchResult, wg *sync.WaitGroup) {
+func (s *Searcher) SearchAsync(searchTerm string, resultChan chan<- SearchResult, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	log.Printf("Starting Colly search for: %s", searchTerm)
